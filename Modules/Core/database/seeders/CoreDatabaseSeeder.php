@@ -1,6 +1,8 @@
 <?php
 
-namespace Modules\Core\Database\Seeders;
+declare(strict_types=1);
+
+namespace Ecom\Core\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 

@@ -28,8 +28,8 @@ class InstallCommand extends Command
         if (!$this->confirm('Are you sure? All data will be purged.')) {
             return self::SUCCESS;
         }
-        $this->call('migrate', ['--seed']);
         $this->call('storage:link');
+        $this->call('php artisan module:migrate-fresh --seed');
         return self::SUCCESS;
     }
 }

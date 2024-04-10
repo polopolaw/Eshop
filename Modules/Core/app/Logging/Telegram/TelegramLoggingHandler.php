@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ecom\Core\app\Logging\Telegram;
+namespace Ecom\Core\Logging\Telegram;
 
-use Ecom\Core\app\Exceptions\Telegram\TelegramApiException;
-use Ecom\Core\app\Services\Telegram\TelegramBotApi;
+use Ecom\Core\Exceptions\Telegram\TelegramApiException;
+use Ecom\Core\Services\Telegram\TelegramBotApi;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 use Monolog\LogRecord;

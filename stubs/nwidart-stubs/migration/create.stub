@@ -18,11 +18,10 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('$TABLE$');
+        if (app()->isLocal()) {
+            Schema::dropIfExists('$TABLE$');
+        }
     }
 };

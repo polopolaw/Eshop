@@ -1,13 +1,15 @@
 <?php
 
-namespace Modules\Core\Providers;
+declare(strict_types=1);
+
+namespace Ecom\Core\Providers;
 
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -58,7 +60,7 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('global', function (Request $request) {
             return Limit::perMinute(1)
                 ->by($request->user()?->id ?: $request->ip())
-                ->response(function (Request $request, array $headers) {
+                ->response(static function (Request $request, array $headers) {
                     return response(__('Take it easy'), Response::HTTP_TOO_MANY_REQUESTS, $headers);
                 });
         });

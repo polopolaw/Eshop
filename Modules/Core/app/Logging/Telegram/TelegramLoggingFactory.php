@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ecom\Core\app\Logging\Telegram;
+namespace Ecom\Core\Logging\Telegram;
 
 use Monolog\Logger;
 
@@ -12,6 +12,7 @@ final class TelegramLoggingFactory
     {
         $logger = new Logger('telegram');
         $logger->setHandlers([new TelegramLoggingHandler($config)]);
+
         return $logger;
     }
 }

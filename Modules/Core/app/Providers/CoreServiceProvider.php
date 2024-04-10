@@ -1,11 +1,14 @@
 <?php
 
-namespace Modules\Core\Providers;
+declare(strict_types=1);
+
+namespace Ecom\Core\Providers;
 
 use Carbon\CarbonInterval;
-use Illuminate\Database\Connection;
+use Ecom\Core\Providers\Faker\FakerImageProvider;
+use Faker\Factory;
+use Faker\Generator;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\DB;
@@ -22,12 +25,12 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->registerCommands();
-        $this->registerCommandSchedules();
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'database/migrations'));
+        $this->registerFakerProviders();
+        $this->registerDevelopmentHelpers();
     }
 
     /**
@@ -39,30 +42,11 @@ class CoreServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register commands in the format of Command::class
-     */
-    protected function registerCommands(): void
-    {
-        // $this->commands([]);
-    }
-
-    /**
-     * Register command Schedules.
-     */
-    protected function registerCommandSchedules(): void
-    {
-        // $this->app->booted(function () {
-        //     $schedule = $this->app->make(Schedule::class);
-        //     $schedule->command('inspire')->hourly();
-        // });
-    }
-
-    /**
      * Register translations.
      */
     public function registerTranslations(): void
     {
-        $langPath = resource_path('lang/modules/' . $this->moduleNameLower);
+        $langPath = resource_path('lang/modules/'.$this->moduleNameLower);
 
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, $this->moduleNameLower);
@@ -79,7 +63,7 @@ class CoreServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes(
-            [module_path($this->moduleName, 'config/config.php') => config_path($this->moduleNameLower . '.php')],
+            [module_path($this->moduleName, 'config/config.php') => config_path($this->moduleNameLower.'.php')],
             'config'
         );
         $this->mergeConfigFrom(module_path($this->moduleName, 'config/config.php'), $this->moduleNameLower);
@@ -90,17 +74,17 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function registerViews(): void
     {
-        $viewPath = resource_path('views/modules/' . $this->moduleNameLower);
+        $viewPath = resource_path('views/modules/'.$this->moduleNameLower);
         $sourcePath = module_path($this->moduleName, 'resources/views');
 
-        $this->publishes([$sourcePath => $viewPath], ['views', $this->moduleNameLower . '-module-views']);
+        $this->publishes([$sourcePath => $viewPath], ['views', $this->moduleNameLower.'-module-views']);
 
         $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->moduleNameLower);
 
         $componentNamespace = str_replace(
             '/',
             '\\',
-            config('modules.namespace') . '\\' . $this->moduleName . '\\' . ltrim(
+            config('modules.namespace').'\\'.$this->moduleName.'\\'.ltrim(
                 config('modules.paths.generator.component-class.path'),
                 config('modules.paths.app_folder', '')
             )
@@ -125,8 +109,8 @@ class CoreServiceProvider extends ServiceProvider
     {
         $paths = [];
         foreach (config('view.paths') as $path) {
-            if (is_dir($path . '/modules/' . $this->moduleNameLower)) {
-                $paths[] = $path . '/modules/' . $this->moduleNameLower;
+            if (is_dir($path.'/modules/'.$this->moduleNameLower)) {
+                $paths[] = $path.'/modules/'.$this->moduleNameLower;
             }
         }
 
@@ -135,22 +119,35 @@ class CoreServiceProvider extends ServiceProvider
 
     private function registerDevelopmentHelpers(): void
     {
-        Model::preventLazyLoading(!app()->isProduction());
-        Model::preventSilentlyDiscardingAttributes(!app()->isProduction());
+        Model::shouldBeStrict(! app()->isProduction());
 
-        DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
-            logger()
-                ->channel('telegram')
-                ->debug('whenQueryingForLongerThan: ' . $connection->query()->toSql());
+        if (app()->isProduction()) {
+            DB::listen(static function ($query) {
+                if ($query->time > CarbonInterval::milliseconds(500)->milliseconds) {
+                    logger()
+                        ->channel('telegram')
+                        ->debug('whenQueryingForLongerThan: '.$query->sql);
+                }
+            });
+            $kernel = app(Kernel::class);
+            $kernel->whenRequestLifecycleIsLongerThan(
+                CarbonInterval::seconds(4),
+                static function () {
+                    logger()
+                        ->channel('telegram')
+                        ->debug('whenRequestLifecycleIsLongerThan: '.request()->url());
+                }
+            );
+        }
+    }
+
+    public function registerFakerProviders(): void
+    {
+        $this->app->singleton(Generator::class, static function () {
+            $faker = Factory::create();
+            $faker->addProvider(new FakerImageProvider($faker));
+
+            return $faker;
         });
-        $kernel = app(app(Kernel::class));
-        $kernel->whenRequestLifecycleIsLongerThan(
-            CarbonInterval::seconds(4),
-            function () {
-                logger()
-                    ->channel('telegram')
-                    ->debug('whenRequestLifecycleIsLongerThan: ' . request()->url());
-            }
-        );
     }
 }

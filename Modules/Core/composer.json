@@ -1,30 +1,23 @@
 {
-    "name": "nwidart/core",
+    "name": "cutcode_shop/core",
     "description": "",
-    "authors": [
-        {
-            "name": "Nicolas Widart",
-            "email": "n.widart@gmail.com"
-        }
-    ],
     "extra": {
         "laravel": {
             "providers": [],
             "aliases": {
-
             }
         }
     },
     "autoload": {
         "psr-4": {
-            "Modules\\Core\\": "app/",
-            "Modules\\Core\\Database\\Factories\\": "database/factories/",
-            "Modules\\Core\\Database\\Seeders\\": "database/seeders/"
+            "Ecom\\Core\\": "app/",
+            "Ecom\\Core\\Database\\Factories\\": "database/factories/",
+            "Ecom\\Core\\Database\\Seeders\\": "database/seeders/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Modules\\Core\\Tests\\": "tests/"
+            "Ecom\\Core\\Tests\\": "tests/"
         }
     }
 }

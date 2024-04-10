@@ -13,7 +13,7 @@ return [
     | Default module namespace.
     |
     */
-    'namespace' => 'Modules',
+    'namespace' => 'Ecom',
 
     /*
     |--------------------------------------------------------------------------
@@ -196,10 +196,10 @@ return [
     |
     */
     'composer' => [
-        'vendor' => env('MODULE_VENDOR', 'nwidart'),
+        'vendor' => env('MODULE_VENDOR', 'polopolaw'),
         'author' => [
-            'name' => env('MODULE_AUTHOR_NAME', 'Nicolas Widart'),
-            'email' => env('MODULE_AUTHOR_EMAIL', 'n.widart@gmail.com'),
+            'name' => env('MODULE_AUTHOR_NAME', 'Andrey Gurkovskiy'),
+            'email' => env('MODULE_AUTHOR_EMAIL', 'polopolaw@gmail.com'),
         ],
         'composer-output' => false,
     ],

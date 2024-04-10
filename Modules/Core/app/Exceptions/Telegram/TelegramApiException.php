@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ecom\Core\app\Exceptions\Telegram;
+namespace Ecom\Core\Exceptions\Telegram;
 
 use Exception;
 
