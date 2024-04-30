@@ -31,4 +31,15 @@ return [
         ],
     ],
 
+    'github' => [
+        'client_id' => env('GITHUB_CLIENT_ID'),
+        'client_secret' => env('GITHUB_CLIENT_SECRET'),
+        'redirect' => env('GITHUB_CLIENT_REDIRECT'),
+    ],
+
+    'telegram' => [
+        'token' => env('TELEGRAM_LOGGING_BOT_TOKEN'),
+        'chat_id' => env('TELEGRAM_LOGGING_CHAT_ID'),
+    ],
+
 ];

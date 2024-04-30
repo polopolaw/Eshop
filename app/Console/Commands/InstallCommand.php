@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -25,11 +27,12 @@ class InstallCommand extends Command
      */
     public function handle(): int
     {
-        if (!$this->confirm('Are you sure? All data will be purged.')) {
+        if (! $this->confirm('Are you sure? All data will be purged.')) {
             return self::SUCCESS;
         }
         $this->call('storage:link');
         $this->call('php artisan module:migrate-fresh --seed');
+
         return self::SUCCESS;
     }
 }

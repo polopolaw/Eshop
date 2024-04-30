@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -20,8 +22,9 @@ class RefreshCommand extends Command
         Storage::deleteDirectory('brands');
 
         $this->call('module:migrate-fresh', [
-            '--seed' => true
+            '--seed' => true,
         ]);
+
         return self::SUCCESS;
     }
 }

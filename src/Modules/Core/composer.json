@@ -1,0 +1,23 @@
+{
+    "name": "ecom/core",
+    "description": "",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Ecom\\Core\\": "app/",
+            "Ecom\\Core\\Database\\Factories\\": "database/factories/",
+            "Ecom\\Core\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ecom\\Core\\Tests\\": "tests/"
+        }
+    }
+}
