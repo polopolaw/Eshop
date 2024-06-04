@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.2",
         "ext-pdo": "*",
+        "intervention/image": "^3.6",
         "laravel/framework": "^11.0",
         "laravel/pail": "^1.1",
         "laravel/socialite": "^5.13",

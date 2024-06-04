@@ -12,16 +12,12 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use Illuminate\Contracts\Routing\Registrar;
 use Illuminate\Support\Facades\Route;
-use Services\Telegram\TelegramBotApi;
 
 final class AuthRegistrar implements RouteRegistrar
 {
     public function map(Registrar $registrar): void
     {
         Route::middleware('web')->group(function () {
-            Route::get('test', function () {
-                (new TelegramBotApi())->message('sdfds', 'fds0', 'fd');
-            });
             Route::controller(LoginController::class)
                 ->group(function () {
                     Route::get('/login', 'page')

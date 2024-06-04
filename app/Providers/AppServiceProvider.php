@@ -39,19 +39,22 @@ class AppServiceProvider extends ServiceProvider
                 ->uncompromised();
         });
 
-        Vite::macro('image', fn (string $asset) => $this->asset("resources/images/{$asset}"));
+        Vite::macro('image', fn(string $asset) => $this->asset("resources/images/{$asset}"));
+
+        $this->registerDevelopmentHelpers();
+        $this->registerFakerProvider();
     }
 
     private function registerDevelopmentHelpers(): void
     {
-        Model::shouldBeStrict(! app()->isProduction());
+        Model::shouldBeStrict(!app()->isProduction());
 
         if (app()->isProduction()) {
             DB::listen(static function ($query) {
                 if ($query->time > CarbonInterval::milliseconds(500)->milliseconds) {
                     logger()
                         ->channel('telegram')
-                        ->debug('whenQueryingForLongerThan: '.$query->sql);
+                        ->debug('whenQueryingForLongerThan: ' . $query->sql);
                 }
             });
             $kernel = app(Kernel::class);
@@ -60,7 +63,7 @@ class AppServiceProvider extends ServiceProvider
                 static function () {
                     logger()
                         ->channel('telegram')
-                        ->debug('whenRequestLifecycleIsLongerThan: '.request()->url());
+                        ->debug('whenRequestLifecycleIsLongerThan: ' . request()->url());
                 }
             );
         }

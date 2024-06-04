@@ -6,7 +6,7 @@ namespace Tests\Feature\App\Http\Controllers;
 
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Requests\ResetPasswordRequest;
-use Database\Factories\UserFactory;
+use Database\Factories\Auth\UserFactory;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Passwords\PasswordBrokerManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;

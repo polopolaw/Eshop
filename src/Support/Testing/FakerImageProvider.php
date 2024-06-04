@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Support\Testing;
 
-use ErrorException;
 use Faker\Provider\Base;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
@@ -30,11 +29,8 @@ final class FakerImageProvider extends Base
         $filePath = $dir . DIRECTORY_SEPARATOR . $filename;
 
         $link = $this->constructLink($params);
-        try {
-            Storage::put($filePath, file_get_contents($link));
-        } catch (ErrorException $exception) {
-            return 0;
-        }
+        Storage::disk('images')
+            ->put($filePath, file_get_contents($link));
 
         return $filePath;
     }
@@ -78,9 +74,9 @@ final class FakerImageProvider extends Base
             $wordLength = strlen($word);
             if ($lineLength + $wordLength > $maxChars) {
                 $result .= PHP_EOL;
-                $lineLength = 0; // Сбрасываем счетчик длины строки
+                $lineLength = 0;
             }
-            $result .= $word . ' '; // Добавляем слово с пробелом
+            $result .= $word . ' ';
             $lineLength += $wordLength + 1; // Учитываем длину слова и пробела
         }
 

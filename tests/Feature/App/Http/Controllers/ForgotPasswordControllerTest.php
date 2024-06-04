@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\App\Http\Controllers;
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use Database\Factories\UserFactory;
+use Database\Factories\Auth\UserFactory;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;

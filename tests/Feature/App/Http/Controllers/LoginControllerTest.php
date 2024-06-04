@@ -6,7 +6,7 @@ namespace Tests\Feature\App\Http\Controllers;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Requests\SignInFormRequest;
-use Database\Factories\UserFactory;
+use Database\Factories\Auth\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
