@@ -20,6 +20,8 @@ return new class extends Migration {
             $table->string('title');
 
             $table->timestamps();
+
+            $table->index('slug');
         });
     }
 

@@ -22,26 +22,22 @@ class SocialAuthController extends Controller
         }
     }
 
-    public function githubCallback(): RedirectResponse
+    public function callback(string $driver): RedirectResponse
     {
         try {
-            $githubUser = Socialite::driver('github')->user();
+            $socialiteUser = Socialite::driver($driver)->user();
         } catch (Throwable $e) {
-            throw new DomainException(__('Something wen wrong'));
+            throw new DomainException(__('Something went wrong'));
         }
 
         $user = User::query()
-            ->where('github_id', $githubUser->id)
-            ->firstOr(function () use ($githubUser) {
-                return User::query()->updateOrCreate([
-                    'email' => $githubUser->email,
-                ], [
-                    'github_id' => $githubUser->id,
-                    'name' => $githubUser->name,
-                    'email' => $githubUser->email,
-                    'password' => bcrypt(str()->random(10)),
-                ]);
-            });
+            ->updateOrCreate([
+                $driver . '_id' => $socialiteUser->getId()
+            ], [
+                'name' => $socialiteUser->getName(),
+                'email' => $socialiteUser->getEmail(),
+                'password' => bcrypt(str()->random(10)),
+            ]);
 
         auth()->login($user);
 

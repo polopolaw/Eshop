@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ThumbnailController extends Controller
 {
-    // TODO exceptions and tests
     public function __invoke(
         string $dir,
         string $method,
@@ -20,7 +19,7 @@ class ThumbnailController extends Controller
         string $image
     ): BinaryFileResponse {
         abort_if(
-            !in_array($size, config('thumbnails.allowed_sizes')),
+            !in_array($size, config('thumbnails.allowed_sizes'), true),
             403,
             __('Size not allowed')
         );

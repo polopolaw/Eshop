@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Domain\Brand\Models\Brand;
-use Domain\Catalog\Models\Category\Category;
-use Domain\Catalog\Models\Product\Product;
+use Domain\Catalog\Models\Brand;
+use Domain\Catalog\Models\Category;
+use Domain\Catalog\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -32,6 +32,8 @@ return new class extends Migration {
                 ->nullOnDelete();
 
             $table->timestamps();
+
+            $table->index('slug');
         });
 
         Schema::create('category_product', function (Blueprint $table) {

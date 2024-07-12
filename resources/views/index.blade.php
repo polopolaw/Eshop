@@ -74,7 +74,7 @@
         </div>
 
         <div class="mt-12 text-center">
-            <a href="#" class="btn btn-purple">{{ __('All products') }} &nbsp;→</a>
+            <a href="{{ route('catalog') }}" class="btn btn-purple">{{ __('All products') }} &nbsp;→</a>
         </div>
     </section>
 

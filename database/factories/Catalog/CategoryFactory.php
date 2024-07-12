@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories\Catalog;
 
-use Domain\Catalog\Models\Category\Category;
+use Domain\Catalog\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CategoryFactory extends Factory

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use Domain\Catalog\Models\Category\Category;
-use Domain\Catalog\Models\Product\Product;
+use Database\Factories\OptionFactory;
+use Database\Factories\OptionValueFactory;
+use Database\Factories\PropertyFactory;
+use Domain\Catalog\Models\Category;
+use Domain\Catalog\Models\Product;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -15,8 +18,19 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
+        $properties = PropertyFactory::new()->count(10)->create();
+
+        OptionFactory::new()->count(2)->create();
+        $optionValues = OptionValueFactory::new()->count(10)->create();
+
         Category::factory(10)
-            ->has(Product::factory(rand(5, 15)))
+            ->has(
+                Product::factory(rand(5, 15))
+                    ->hasAttached($optionValues)
+                    ->hasAttached($properties, function () {
+                        return ['value' => ucfirst(fake()->word)];
+                    })
+            )
             ->create();
     }
 }

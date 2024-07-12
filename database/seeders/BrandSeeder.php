@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use Domain\Brand\Models\Brand;
+use Domain\Catalog\Models\Brand;
 use Illuminate\Database\Seeder;
 
 class BrandSeeder extends Seeder

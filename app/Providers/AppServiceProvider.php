@@ -10,7 +10,6 @@ use Faker\Generator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Support\Testing\FakerImageProvider;
@@ -26,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
+        $this->app->register(ViewServiceProvider::class);
     }
 
     /**
@@ -33,13 +33,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Password::defaults(function () {
+        Password::defaults(static function () {
             return Password::min(8)
                 ->mixedCase()
                 ->uncompromised();
         });
-
-        Vite::macro('image', fn(string $asset) => $this->asset("resources/images/{$asset}"));
 
         $this->registerDevelopmentHelpers();
         $this->registerFakerProvider();
